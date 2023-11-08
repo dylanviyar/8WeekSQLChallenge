@@ -39,3 +39,13 @@ Please Note: Analysis for this Case Study and all the following Case Studies in 
 
 Question #1: What is the total amount each customer spent at the restaurant?
 
+```SQL
+SELECT customer_id, SUM(price) AS total_spent FROM sales
+JOIN menu ON sales.product_id = menu.product_id
+GROUP BY customer_id
+ORDER BY total_spent DESC;
+```
+<img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/1980fa4c-90c3-479f-9b0a-722df21bf9ba" width ="200">
+
+
+
