@@ -35,7 +35,7 @@ LIMIT 15;
 
 ## 4. Data Analysis 
 
-Please Note: Analysis for this Case Study and all the following Case Studies in this repository are conducted by answering business questions provided by the data apprenticeship [here!](https://8weeksqlchallenge.com/)
+Please Note: Analysis for this Case Study and all the following Case Studies in this repository are conducted by answering business questions provided by the data apprenticeship [here](https://8weeksqlchallenge.com/)!
 
 Question #1: What is the total amount each customer spent at the restaurant?
 
