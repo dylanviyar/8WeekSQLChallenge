@@ -40,7 +40,8 @@ Please Note: Analysis for this Case Study and all the following Case Studies in 
 Question #1: What is the total amount each customer spent at the restaurant?
 
 ```SQL
-SELECT customer_id, SUM(price) AS total_spent FROM sales
+SELECT customer_id,
+SUM(price) AS total_spent FROM sales
 JOIN menu ON sales.product_id = menu.product_id
 GROUP BY customer_id
 ORDER BY total_spent DESC;
