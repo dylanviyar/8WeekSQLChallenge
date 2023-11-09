@@ -173,6 +173,59 @@ Steps:
 
  <img src ="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/49d8a618-d4f6-455e-acab-6eb484461a27" width = "200">
 
- 
+ #### Question #7: Which item was purchased just before the customer became a member?
 
+ ```SQL
+WITH ranked_table AS (
+SELECT sales.customer_id, 
+order_date,
+join_date,
+product_name,
+DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY(order_date - join_date) DESC) AS Ranking
+FROM sales
+JOIN members ON sales.customer_id = members.customer_id
+JOIN menu ON menu.product_id = sales.product_id
+WHERE order_date < join_date
+)
 
+SELECT customer_id,
+product_name 
+FROM ranked_table
+WHERE Ranking = 1;
+```
+Steps:
+- In a very similar fashion as the previous question,reate a Common Table Expression (CTE) named `ranked_table` in which you utilize the window function **DENSE_RANK** partitioned over `customer_id` ordered by `order_date - join_date` (effectively creating rankings based on the difference of the time from the date a customer ordered an item and the date that they became a member)
+- However we would like the item purchased *before* the customer became a member, thus we can reverse the conditional statement in the **WHERE** clause to: `order_date < join_date`
+- Query the CTE in which the Ranking = 1 to get the first ranking, i.e the item that was purchased right before membership aquisition
+
+*Solution:*
+
+<img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/3c6c6dde-e631-4ba5-b218-361aa471567d" width = "200">
+
+#### Question #8: What is the total items and amount spent for each member before they became a member?
+
+```SQL
+SELECT sales.customer_id,
+COUNT(DISTINCT(product_name)) AS Total_Items,
+SUM(price) AS Amount_Spent
+FROM sales
+JOIN menu ON sales.product_id = menu.product_id
+JOIN members ON sales.customer_id = members.customer_id
+WHERE order_date < join_date
+GROUP BY customer_id;
+```
+
+Steps:
+- **JOIN** all three tables on their respective relations to obtain necessary information
+- **GROUP BY** the `customer_id` and aggregate the **SUM** of the `price` and the **COUNT** of the amount of distinct `product_names`
+- Filter the table by ensuring all the values are when the individual was not yet a member using the **WHERE** clause
+
+  *Solution:*
+
+ <img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/7c4a7914-ffef-4633-a454-f4dee9f9a7da)" width="200">
+
+ #### Question #9: If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have? 
+
+```SQL
+
+```
