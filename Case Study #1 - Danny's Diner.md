@@ -51,6 +51,8 @@ Steps:
 - **GROUP BY** the `customer_id` 
 - **SUM** the price column to aggregate the groups and find the total amount spent by each customer.
 
+Solution:
+
 <img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/1980fa4c-90c3-479f-9b0a-722df21bf9ba" width ="200">
 
 #### Question #2: How many days has each customer visited the restaurant?
@@ -64,6 +66,8 @@ GROUP BY customer_id;
 Steps:
 - **GROUP BY** `customer_id`
 - **COUNT** the **DISTINCT** `order_date` to determine the amount of unique days that the customer visited the restaurant
+
+Solution:
 
 <img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/5bf74d4e-8cfc-41e7-b954-bff4bfc3f806" width = "200">
 
@@ -89,6 +93,8 @@ Steps:
 - Create a Common Table Expression (CTE) named `ordered_sales` in which you utilize the window function **DENSE_RANK** partitioned over `customer_id` ordered by `order_date` (effectively creating rankings of earliest date associated with each unique customer id)
 - To obtain the first item purchased, we can **SELECT** the `product_name` from the CTE and use the **WHERE** clause to find the row in which the ranking is at the first position i.e: *WHERE my_rank = 1*\
 
+Solution:
+
 <img src ="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/5a611ae5-3a99-4612-bcf0-19d1189fd968" width="200">
 
 #### Question #4: What is the most purchased item on the menu and how many times was it purchased by all customers?
@@ -108,6 +114,8 @@ Steps:
 - ***JOIN** the `sales` and `menu` data tables to obtain the necessary information on product id and names
 - **COUNT** the `product_name` to find the amount of purchases per group of product names
 - Use **ORDER BY DESC** and **LIMIT** by 1 to find the top purchased item
+
+Solution:
 
 <img src= "https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/1f76a34c-ae00-400d-8acf-38ee80e330fb" width ="200">
 
@@ -132,6 +140,8 @@ WHERE Ranking = 1;
 Steps:
 - Create a Common Table Expression (CTE) named `ordered_table` in which you utilize the window function **DENSE_RANK** partitioned over `customer_id` ordered by `COUNT(sales.product_id)DESC` (effectively creating rankings of amount of products purchased for each customer)
 - Query the CTE with the **WHERE** clause filters the rows to have the most popular item for the customer (Ranking = 1)
+
+Solution:
 
 <img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/1fbe73e8-c78a-480b-a160-a9ee8ff382a7" width = "200">
 
@@ -158,6 +168,8 @@ WHERE Ranking = 1;
 Steps:
 - Create a Common Table Expression (CTE) named `ranked_table` in which you utilize the window function **DENSE_RANK** partitioned over `customer_id` ordered by `order_date - join_date` (effectively creating rankings based on the difference of the time from the date a customer ordered an item and the date that they became a member)
 - Query the CTE in which the **WHERE** clause filters the rows to get the first item purchased after joining the membership (Ranking = 1)
+
+Solution:
 
  <img src ="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/49d8a618-d4f6-455e-acab-6eb484461a27" width = "200">
 
