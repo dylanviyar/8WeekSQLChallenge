@@ -94,7 +94,73 @@ Steps:
 #### Question #4: What is the most purchased item on the menu and how many times was it purchased by all customers?
 
 ```SQL
-
+SELECT  
+product_name,
+COUNT(product_name) AS AmountOfTimesPurchased
+FROM sales
+JOIN menu ON sales.product_id = menu.product_id
+GROUP BY product_name
+ORDER BY AmountOfTimesPurchased DESC
+LIMIT 1;
 ```
+
+Steps: 
+- ***JOIN** the `sales` and `menu` data tables to obtain the necessary information on product id and names
+- **COUNT** the `product_name` to find the amount of purchases per group of product names
+- Use **ORDER BY DESC** and **LIMIT** by 1 to find the top purchased item
+
+<img src= "https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/1f76a34c-ae00-400d-8acf-38ee80e330fb" width ="200">
+
+#### Question #5:Which item was the most popular for each customer?
+
+```SQL
+WITH ordered_table AS (
+SELECT customer_id,
+product_name,
+DENSE_RANK() OVER (PARTITION BY customer_id ORDER BY COUNT(sales.product_id)DESC) AS Ranking
+FROM sales
+JOIN menu ON menu.product_id = sales.product_id
+GROUP BY customer_id, product_name
+)
+
+SELECT customer_id,
+product_name,
+FROM ordered_table 
+WHERE Ranking = 1;
+```
+
+Steps:
+- Create a Common Table Expression (CTE) named `ordered_table` in which you utilize the window function **DENSE_RANK** partitioned over `customer_id` ordered by `COUNT(sales.product_id)DESC` (effectively creating rankings of amount of products purchased for each customer)
+- Query the CTE with the **WHERE** clause filters the rows to have the most popular item for the customer (Ranking = 1)
+
+<img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/1fbe73e8-c78a-480b-a160-a9ee8ff382a7" width = "200">
+
+#### Question #6: Which item was purchased first by the customer after they became a member?
+
+```SQL
+WITH ranked_table AS (
+SELECT sales.customer_id, 
+order_date,
+join_date,
+product_name,
+DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY(order_date - join_date)) AS Ranking
+FROM sales
+JOIN members ON sales.customer_id = members.customer_id
+JOIN menu ON menu.product_id = sales.product_id
+WHERE join_date < order_date
+)
+
+SELECT customer_id,
+product_name 
+FROM ranked_table
+WHERE Ranking = 1;
+```
+Steps:
+- Create a Common Table Expression (CTE) named `ranked_table` in which you utilize the window function **DENSE_RANK** partitioned over `customer_id` ordered by `order_date - join_date` (effectively creating rankings based on the difference of the time from the date a customer ordered an item and the date that they became a member)
+- Query the CTE in which the **WHERE** clause filters the rows to get the first item purchased after joining the membership (Ranking = 1)
+
+ <img src ="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/49d8a618-d4f6-455e-acab-6eb484461a27" width = "200">
+
+ 
 
 
