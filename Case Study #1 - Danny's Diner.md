@@ -270,7 +270,7 @@ Steps:
 
 *Solution:*
 
-<img src=https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/4d5c7bc1-c0a2-4d73-94ce-261d7b823e48" width="200">
+<img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/4d5c7bc1-c0a2-4d73-94ce-261d7b823e48" width="200">
 
 
 
