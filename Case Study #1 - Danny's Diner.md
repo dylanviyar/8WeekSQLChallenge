@@ -227,5 +227,50 @@ Steps:
  #### Question #9: If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have? 
 
 ```SQL
-
+SELECT customer_id,
+SUM(CASE
+     WHEN product_name = 'sushi' THEN (price * 20)
+     ELSE price * 10
+END) AS points
+FROM sales
+JOIN menu ON sales.product_id = menu.product_id
+GROUP BY customer_id;
 ```
+
+Steps:
+- Use the **CASE** statement to create a new column that calculates the points of each customer correctly (noting the double points for a sushi sale)
+- **JOIN** the sales and menu tables to get the appropriate information
+- **GROUP BY** the `customer_id` and aggregate by the sum of the **CASE** statement
+
+*Solution:*
+
+<img src ="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/7d6ad232-1f6f-434a-88e6-fbccd94f150d" width = "200">
+
+#### Question #10: In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+
+```SQL
+SELECT sales.customer_id,
+SUM(CASE
+     WHEN order_date >= join_date
+       AND (order_date <= join_date + INTERVAL 7 DAY) OR product_name = 'sushi'
+       AND MONTH(order_date) = 1 THEN (price * 20)
+     ELSE price * 10
+	END) AS points
+FROM sales
+JOIN members ON sales.customer_id = members.customer_id
+JOIN menu ON sales.product_id = menu.product_id
+GROUP BY customer_id
+ORDER BY customer_id;
+```
+
+Steps:
+- Create a **CASE** statement in which it calculates the points of a given customer, ensuring that the points are doubled for sales within the first week of membership or the product purchased was sushi
+- **JOIN** the sales and members data tables to obtain the required information
+- **GROUP BY** and **ORDER BY** the `customer_id` to find the amount of points for each individual customer
+
+*Solution:*
+
+<img src=https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/4d5c7bc1-c0a2-4d73-94ce-261d7b823e48" width="200">
+
+
+
