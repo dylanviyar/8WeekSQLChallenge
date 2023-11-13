@@ -272,5 +272,68 @@ Steps:
 
 <img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/4d5c7bc1-c0a2-4d73-94ce-261d7b823e48" width="200">
 
+## 5. Additional Exercises
+
+Join all the tables and create a column signifying membership:
+
+```SQL
+SELECT sales.customer_id,
+order_date,
+product_name,
+price,
+CASE
+   WHEN join_date IS NOT NULL AND order_date >= join_date THEN 'Y'
+   ELSE 'N'
+END AS IsMember
+FROM sales
+JOIN menu ON sales.product_id = menu.product_id
+LEFT JOIN members ON sales.customer_id = members.customer_id;
+```
+Steps:
+- Create a **CASE** statement that will determine the membership status of a customer by checking for a `join_date` that the `order_date` is greater than or equal to the `join_date`
+- **JOIN** the `menu` table with the `sales` table on the `product_id` column
+- Since we need to determine membership for all customers, we will conduct a `LEFT JOIN` with the `sales` table on the left and the `members` table on the right. We have accounted for the possible null values in our **CASE** statement
+
+*Solution:*
+
+<img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/1b129cb4-f5cc-4a23-a96a-ae27dc02a4d1" width = "400">
+
+
+Ranking: Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.
+
+```SQL
+WITH temp_table AS(
+SELECT sales.customer_id,
+order_date,
+product_name,
+price,
+CASE
+    WHEN join_date IS NOT NULL AND order_date >= join_date THEN 'Y'
+    ELSE 'N'
+END AS IsMember
+FROM sales
+JOIN menu ON sales.product_id = menu.product_id
+LEFT JOIN members ON sales.customer_id = members.customer_id
+)
+
+SELECT customer_id,
+order_date,
+product_name,
+price,
+IsMember,
+CASE
+    WHEN IsMember = 'N' then NULL 
+    ELSE RANK() OVER(PARTITION BY customer_id,IsMember ORDER BY(order_date) ) 
+END AS Ranking
+FROM temp_table;
+```
+
+Steps:
+- Create a CTE that contains a **CASE** statement that calculates the membership of an individual
+- Query the CTE and create an additional **CASE** statement that utilizes the window function **RANK()** to find the rankings of the customers
+
+*Solution:*
+
+<img src ="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/9ae64600-d1ba-43ad-90a4-43423c00f640" width = "400">
 
 
