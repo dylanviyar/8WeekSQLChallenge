@@ -8,6 +8,6 @@ In order to determine trends and habits in a pizza delivery service, we are anal
 
 ## 2. Dataset Relationship Diagram
 
-![DatasetRelationshipCase2](https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/8a657434-a9ca-4c59-86c2-82adbd07d013)
+<img src="https://github.com/dylanviyar/8WeekSQLChallenge/assets/81194849/8a657434-a9ca-4c59-86c2-82adbd07d013" width = "500">
 
 
